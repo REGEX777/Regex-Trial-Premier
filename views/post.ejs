@@ -1,0 +1,27 @@
+<%- include('partials/nav') -%>
+<%= // post %>
+<div class="flex flex-grow items-start justify-center font-poppins">
+    <div
+        class="wrapper w-[80%] mid-small2:w-[75%] mob-ninenine3:w-[60%] 4k-lowminus2:w-[40%] flex flex-col items-start justify-center gap-10">
+        <div class="w-full flex items-center justify-between">
+            <p class="text-3xl mid-small2:text-4xl font-bold text-start"><%= post.title %></p>
+
+            <% if(user && user._id == post.authorId ){%>
+            <a href="/post/edit/<%= post.id %>" id="button"
+                class="flex items-center justify-center h-[2.5rem] bg-black text-white font-poppins rounded-lg w-[7rem]">
+                <i class="fa-solid fa-pencil pr-2"></i> Edit
+            </a>
+            <% } %>
+        </div>
+        <p>By<a class="text-blue-600" href="/posts/user/<%= post.authorId %>"> <%= post.username %>
+                <% if(user && user._id == post.authorId ){%> (You) <% } %></a></p>
+
+        <img class="rounded-2xl" src="/uploads/<%= post.filename %>" alt="" srcset="">
+        <p class="text-center md-start:text-start text-[1.125rem] text-[#141414] whitespace-pre-line font-serif">
+            <%= post.body %>
+        </p>
+        <br>
+
+    </div>
+</div>
+<%- include('partials/foot') -%>

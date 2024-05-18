@@ -1,0 +1,34 @@
+<%- include('partials/nav') -%>
+
+<div class="flex flex-grow items-center justify-center">
+
+    <div class="flex items-center justify-center font-poppins w-full h-full">
+        <div
+            class="min-h-[35rem] bg-white border-[3px] rounded-lg border-[#EDEDED] w-[85%] mid-small2:w-[65%] mob-ninenine3:w-[35%] 4k-lowminus2:w-[25%] flex flex-col items-center justify-center gap-10">
+            <% if (errorMessages && errorMessages.length > 0) { %>
+            <div
+                class="flash-messages h-16 w-[80%] bg-[#eeee] rounded-lg flex flex-col gap-2 items-center justify-center text-sm font-Inter text-[#0E172A]">
+                <% errorMessages.forEach(message => { %>
+                <div class="flash-message">
+                    <p class="text-center"> <%=message %> </p>
+                </div>
+                <% }); %>
+            </div>
+
+            <% } %>
+
+            <form class="w-[80%] flex flex-col items-start justify-start gap-5" action="/signup" method="post">
+                <p class="text-3xl font-dela-gothic">Sign Up</p>
+                <br>
+                <input class="bg-[#F5F2F2] rounded-lg h-[3.5rem] w-full pl-5 pr-5" type="email" required
+                    placeholder="Email" name="email">
+                <input class="bg-[#F5F2F2] rounded-lg h-[3.5rem] w-full pl-5 pr-5" type="password" required
+                    placeholder="Password" name="password">
+                <button type="submit" class="bg-[#000] h-[3.5rem] w-full text-white rounded-lg">Sign Up</button>
+                <p>Already have an account? <a class="text-blue-400" href="/login">Log In</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/foot') -%>

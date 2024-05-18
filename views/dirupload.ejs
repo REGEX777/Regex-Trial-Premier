@@ -1,0 +1,40 @@
+<%- include('partials/nav') -%>
+<div class="flex flex-grow items-start justify-center">
+
+    <div class="wrapper w-[90%] font-poppins flex flex-col items-start justify-center gap-10">
+        <a class="mb-5" href="/admin"><i class="fa-solid fa-arrow-left pr-2"></i> Back to Admin Page</a>
+
+        <% posts.forEach(function(post){ %>
+        <div class="flex min-h-[20vh] flex-col mid-small3:flex-row bg-gray-100 w-full rounded-lg p-5 gap-5">
+            <img class="rounded-lg w-full mid-small3:w-[40%] mob-ninenine4:w-[20%]" src="uploads/<%= post.filename %>"
+                alt="" srcset="" loading="lazy">
+            <div class="flex flex-col h-full justify-center gap-2">
+                <p class="text-2xl font-medium"><%= post.title %></p>
+                <p class="text-base font-light">
+                    <%= post.body.length > 250 ? post.body.substring(0, 250) + ' ...Continued' : post.body %></p>
+                <p class="text-base font-semibold" data-created-at="<%= post.createdAt %>"></p>
+                <a class="pt-3 pb-3 text-white rounded-lg flex items-center justify-center w-[8rem] bg-blue-500"
+                    href="/post/edit/<%= post.id %>"><i class="fa-solid fa-pencil pr-2"> </i> Edit</a>
+                <a class="pt-3 pb-3 text-white rounded-lg flex items-center justify-center w-[8rem] bg-red-500"
+                    href="/delete/<%= post.id %>"><i class="fa-solid fa-trash pr-2"></i> Delete</a>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-created-at]').forEach(element => {
+                const rawDate = element.getAttribute('data-created-at');
+                const formattedDate = new Date(rawDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    timeZoneName: 'short'
+                });
+                element.textContent = formattedDate;
+            });
+        });
+    </script>
+
+    <%- include('partials/foot') -%>

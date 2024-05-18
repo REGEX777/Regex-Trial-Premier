@@ -1,0 +1,57 @@
+<%- include('partials/nav.ejs') -%>
+<div class="flex flex-grow items-start justify-center">
+
+    <div class="wrapper w-[90%]">
+        <div class="flex items-center justify-start w-full min-h-fit py-5">
+            <a href="/myposts"
+                class="flex bg-black items-center justify-center h-14 min-w-[8rem] rounded-lg text-white font-poppins">
+                My Posts
+            </a>
+        </div>
+        <p class=" text-2xl font-poppins font-semibold mb-5">New Post</p>
+
+        <% if (successMessages && successMessages.length > 0) { %>
+        <div
+            class="flash-messages h-16 w-[90%] mb-5 bg-green-500 text-white rounded-lg flex flex-col gap-2 items-center justify-center text-sm font-Inter">
+            <% successMessages.forEach(message => { %>
+            <div class="flash-message">
+                <p class="text-center"><%= message %></p>
+            </div>
+            <% }); %>
+        </div>
+        <% } %>
+        <% if (errorMessages && errorMessages.length > 0) { %>
+        <div
+            class="flash-messages h-16 w-[80%] bg-red-500 text-white rounded-lg flex flex-col gap-2 items-center justify-center text-sm font-Inter">
+            <% errorMessages.forEach(message => { %>
+            <div class="flash-message">
+                <p class="text-center"><%= message %></p>
+            </div>
+            <% }); %>
+        </div>
+        <% } %>
+        <form class="w-full md-mid2:w-[80%] mob-ninenine3:w-[60%]" action="/post" method="post"
+            enctype="multipart/form-data">
+            <div class="mb-5 w-full">
+                <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Title</label>
+                <input type="text" id="base-input"
+                    class="bg-gray-50 border border-gray-300 text-sm px-2 rounded-lg w-full h-10" name="title">
+            </div>
+            <div class="mb-5 w-full">
+                <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 w-full">Body</label>
+                <textarea name="body" id="" rows="10"
+                    class="bg-gray-50 border w-full border-gray-300 rounded-lg"></textarea>
+            </div>
+            <div class="mb-5 w-full">
+                <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 w-full">Cover Image</label>
+                <input accept="image/*" id="imageInput" type="file"
+                    class="t-1 block space-y-1 rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 w-[90%]"
+                    id="image" name="image" />
+            </div>
+            <div class="flex max-h-[13rem] max-w-[13rem] mb-5 rounded-lg" id="imagePreview"></div>
+            <button type="submit"
+                class="h-[2.5rem] bg-black text-white font-poppins rounded-lg w-[7rem]">Submit</button>
+        </form>
+
+
+        <%- include('partials/foot.ejs') -%>

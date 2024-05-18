@@ -1,0 +1,69 @@
+</div>
+</div>
+</body>
+<script>
+    let hamburger = document.getElementById('hamburger');
+    let link = document.getElementById('links')
+    let button = document.getElementById('button')
+
+    hamburger.addEventListener('click', () => {
+        link.classList.toggle('hidden')
+        link.classList.toggle('flex')
+        button.classList.toggle('hidden')
+        button.classList.toggle('block')
+    });
+
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+
+    // Listen for changes in the file input
+    imageInput.addEventListener('change', function () {
+        // Clear the previous preview
+        imagePreview.innerHTML = '';
+
+        // Get selected files
+        const files = imageInput.files;
+
+        // Loop through the selected files and create previews
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            // Check if the file is an image
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // Create an image element for the preview
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-image');
+
+                    // Append the image to the preview container
+                    imagePreview.appendChild(img);
+                };
+
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+
+    // JavaScript to toggle the dropdown
+    const toggleButton = document.getElementById('toggleDropdown');
+    const tagsDropdown = document.getElementById('tagsDropdown');
+
+    toggleButton.addEventListener('click', function () {
+        tagsDropdown.style.display = tagsDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    function logout() {
+        window.location.href = '/logout'
+    }
+
+    function login() {
+        window.location.href = '/login'
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+
+</html>
