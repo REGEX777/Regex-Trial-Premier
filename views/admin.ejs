@@ -34,17 +34,17 @@
             enctype="multipart/form-data">
             <div class="mb-5 w-full">
                 <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Title</label>
-                <input type="text" id="base-input"
+                <input required type="text" id="base-input"
                     class="bg-gray-50 border border-gray-300 text-sm px-2 rounded-lg w-full h-10" name="title">
             </div>
             <div class="mb-5 w-full">
                 <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 w-full">Body</label>
-                <textarea name="body" id="" rows="10"
+                <textarea required name="body" id="" rows="10"
                     class="bg-gray-50 border w-full border-gray-300 rounded-lg"></textarea>
             </div>
             <div class="mb-5 w-full">
                 <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 w-full">Cover Image</label>
-                <input accept="image/*" id="imageInput" type="file"
+                <input required accept="image/*" id="imageInput" type="file"
                     class="t-1 block space-y-1 rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 w-[90%]"
                     id="image" name="image" />
             </div>
