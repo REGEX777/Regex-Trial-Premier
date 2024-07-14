@@ -155,7 +155,7 @@ function isLoggedOut(req, res, next) {
     if (!req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/admin');
+    res.redirect('/dashboard');
 }
 // Middleware to store original URL
 function storeOriginalUrl(req, res, next) {
@@ -206,6 +206,8 @@ app.get('/', storeOriginalUrl, (req, res) => {
 app.get('/signup', isLoggedOut, (req, res) => {
     res.render('signup')
 })
+
+
 app.post('/signup', validateEmail, isLoggedOut, async (req, res) => {
     const existingUser = await User.findOne({
         email: req.body.email
@@ -242,7 +244,7 @@ app.post('/signup', validateEmail, isLoggedOut, async (req, res) => {
                 const redirectUrl = req.cookies.redUrl
                 res.redirect(redirectUrl)
             } else {
-                res.redirect('/admin')
+                res.redirect('/dashboard')
             }
         }
     })
@@ -265,7 +267,7 @@ app.post('/login', validateEmail, passport.authenticate('local', {
         const redirectUrl = req.cookies.redUrl
         res.redirect(redirectUrl)
     } else {
-        res.redirect('/admin')
+        res.redirect('/dashboard')
     }
 });
 
@@ -309,7 +311,7 @@ app.post('/post', isLoggedin, upload.single('image'), async function (req, res) 
         await post.save();
 
         req.flash('success', 'Post created successfully.');
-        res.redirect('/admin');
+        res.redirect('/dashboard');
     } catch (error) {
         console.error(error);
         req.flash('error', 'Internal Server Error');
@@ -330,11 +332,11 @@ app.get('/myposts', storeOriginalUrl, isLoggedin, (req, res) => {
         })
         .catch((err) => {
             console.error(err);  // Log any errors
-        });
+        }); 
 });
 
 // Route to render admin page
-app.get('/admin', isLoggedin, (req, res) => {
+app.get('/dashboard', isLoggedin, (req, res) => {
     res.render('admin', {
         successMessages: req.flash('success'),
         errorMessages: req.flash('error')
@@ -342,37 +344,37 @@ app.get('/admin', isLoggedin, (req, res) => {
 });
 
 // Route to delete a post by ID
-app.get('/delete/:id', isLoggedin, async function (req, res) {
+app.delete('/delete/:id', isLoggedin, async function (req, res) {
     try {
-        const postId = req.params.id;
-        const userId = req.user._id;
+        const postId = req.params.id;  
+        const userId = req.user._id;  
 
-        // Find the post by ID
+        // Find the post by its ID
         const post = await Post.findById(postId);
 
         if (!post) {
-            return res.status(404).send('Post not found');  // Handle post not found
+            return res.status(404).send('Post not found'); 
         }
 
-        // Check if the user is the author or an admin
+        // Check if the user is the author of the post or an admin
         if (post.authorId.toString() !== userId.toString() && !req.user.isAdmin) {
-            return res.status(403).send('You are not authorized to delete this post');  // Handle unauthorized access
+            return res.status(403).send('You are not authorized to delete this post');
         }
 
         // Delete the file associated with the post
         fs.unlink(__dirname + `/public/uploads/${post.filename}`, (err) => {
-            if (err) throw err;
+            if (err) throw err;  
             console.log(`[DEBUG]> Successful deletion of file ${post.filename}`);
         });
 
-        // Delete the post
+        // Delete the post from the database
         await Post.deleteOne({ _id: postId });
 
-        res.redirect('/myposts');  // Redirect to user's posts after deletion
+        res.status(200).send('Post deleted successfully');  
         console.log(`[DEBUG]> Successful deletion of ID ${postId}`);
     } catch (error) {
-        console.log(error);  // Log any errors
-        res.status(500).send('Internal Server Error');
+        console.error(error);  
+        res.status(500).send('Internal Server Error');  
     }
 });
 

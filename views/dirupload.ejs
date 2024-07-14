@@ -2,7 +2,7 @@
 <div class="flex flex-grow items-start justify-center">
 
     <div class="wrapper w-[90%] font-poppins flex flex-col items-start justify-center gap-10">
-        <a class="mb-5" href="/admin"><i class="fa-solid fa-arrow-left pr-2"></i> Back to Admin Page</a>
+        <a class="mb-5" href="/dashboard"><i class="fa-solid fa-arrow-left pr-2"></i> Back to Dashboard</a>
 
         <% posts.forEach(function(post){ %>
         <div class="flex min-h-[20vh] flex-col mid-small3:flex-row bg-gray-100 w-full rounded-lg p-5 gap-5">
@@ -15,8 +15,8 @@
                 <p class="text-base font-semibold" data-created-at="<%= post.createdAt %>"></p>
                 <a class="pt-3 pb-3 text-white rounded-lg flex items-center justify-center w-[8rem] bg-blue-500"
                     href="/post/edit/<%= post.id %>"><i class="fa-solid fa-pencil pr-2"> </i> Edit</a>
-                <a class="pt-3 pb-3 text-white rounded-lg flex items-center justify-center w-[8rem] bg-red-500"
-                    href="/delete/<%= post.id %>"><i class="fa-solid fa-trash pr-2"></i> Delete</a>
+                <button class="delete-button pt-3 pb-3 text-white rounded-lg flex items-center justify-center w-[8rem] bg-red-500"
+                    data-id="<%= post.id %>"><i class="fa-solid fa-trash pr-2"></i> Delete</button>
             </div>
         </div>
         <% }) %>
@@ -34,7 +34,35 @@
                 });
                 element.textContent = formattedDate;
             });
+
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', async function () {
+                    const postId = this.getAttribute('data-id');
+
+                    // Confirm before deleting
+                    if (confirm('Are you sure you want to delete this post?')) {
+                        try {
+                            const response = await fetch(`/delete/${postId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (response.ok) {
+                                window.location.href = '/myposts';  // Redirect to the user's posts page
+                            } else {
+                                const errorText = await response.text();
+                                alert(`Error: ${errorText}`);
+                            }
+                        } catch (error) {
+                            console.error('Error deleting post:', error);
+                            alert('An error occurred while deleting the post.');
+                        }
+                    }
+                });
+            });
         });
     </script>
 
-    <%- include('partials/foot') -%>
+<%- include('partials/foot') -%>
